@@ -2,9 +2,9 @@
 
 A GPT-2 based protein language model for designing proteins with specific properties. The models can be found on [Hugging Face](https://huggingface.co/collections/aayush14/peptidegpt-66f9f3efec6983f03c0efdb6). 
 
-## Folder Structure
+## Important Files
 
-- **models**: Contains different models specific to a propery.
+- **inference.py**: This script runs inferences using a chosen model.
 - **data**: Contains the necessary data for model training and evaluation.
 
 ## Files
@@ -24,5 +24,6 @@ A GPT-2 based protein language model for designing proteins with specific proper
    * output_dir: Directory for storing all output files.
    * pred_model_path: You need to clone PeptideBERT and give its path to run the predictions. 
    * seed: Random seed for reproducibility (default is 42).
+4. Hugging Face's [run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_clm.py) script can be used to fine-tune the model on a custon dataset. 
 
 
