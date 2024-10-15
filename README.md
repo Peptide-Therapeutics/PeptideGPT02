@@ -24,6 +24,6 @@ A GPT-2 based protein language model for designing proteins with specific proper
    * output_dir: Directory for storing all output files.
    * pred_model_path: You need to clone PeptideBERT and give its path to run the predictions. 
    * seed: Random seed for reproducibility (default is 42).
-4. Hugging Face's [run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_clm.py) script can be used to fine-tune the model on a custon dataset. 
+4. Hugging Face's [run_clm.py](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_clm.py) script can be used to fine-tune the model on a custom dataset. 
 
 
