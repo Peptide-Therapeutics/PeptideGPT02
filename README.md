@@ -1,6 +1,6 @@
 # PeptideGPT
 
-A GPT-2 based protein language model for designing proteins with specific properties. This repository contains different models trained for peptide generation, along with the necessary data and scripts for inference.
+A GPT-2 based protein language model for designing proteins with specific properties. The models can be found on [Hugging Face](https://huggingface.co/collections/aayush14/peptidegpt-66f9f3efec6983f03c0efdb6). 
 
 ## Folder Structure
 
