@@ -61,7 +61,6 @@ protgpt2 = pipeline('text-generation', model=args.model_path, device_map="auto")
 
 print('Starting generation...')
 sequences = []
-#sequences = protgpt2("<|endoftext|>" + args.starts_with, max_length=args.max_length, do_sample=True, top_k=950, repetition_penalty=1.2, num_return_sequences=args.num_return_sequences, eos_token_id=0)
 all_amines = ['L','A','G','V','E','S','I','K','R','D','T','P','N','Q','F','Y','M','H','C','W']
 for cha in all_amines:
     sequences_cha = protgpt2("<|endoftext|>" + cha, max_length=args.max_length, do_sample=True, top_k=950, repetition_penalty=1.2, num_return_sequences=args.num_return_sequences//len(all_amines), eos_token_id=0)
@@ -70,7 +69,6 @@ print('Generation Complete.')
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print('Using Device', device)
-#device = torch.device('cpu')
 
 #Convert the sequence to a string like this
 #(note we have to introduce new line characters every 60 amino acids,
@@ -98,19 +96,6 @@ sequences_with_ppl = []
 for sequence in tqdm(sequences):
     seq = sequence['generated_text']
     seq = seq.replace("<|endoftext|>", "")
-    # seq = seq.replace("[pos-h]", "")
-    # seq = seq.replace("[neg-h]", "")
-    # seq = seq.replace("[", "")
-    # seq = seq.replace("n", "")
-    # seq = seq.replace("e", "")
-    # seq = seq.replace("g", "")
-    # seq = seq.replace("-", "")
-    # seq = seq.replace("h", "")
-    # seq = seq.replace("]", "")
-    # seq = seq.replace("p", "")
-    # seq = seq.replace("o", "")
-    # seq = seq.replace("s", "")
-    # seq = seq.replace("�", "")
     seq = seq.replace('\n', '')
     seq = seq.strip()
     sequences_with_ppl.append(seq)
@@ -118,18 +103,6 @@ for sequence in tqdm(sequences):
     seq = '<|endoftext|>' + seq + '<|endoftext|>'
     ppl = calculatePerplexity(seq, model, tokenizer)
     ppls.append(ppl)
-    
-    # for line in tqdm(file):
-    #     seq = line.split("'")[3]
-    #     #seq = seq['generated_text']
-    #     seq = seq.replace("<|endoftext|>", "")
-    #     seq = seq.replace('\n', '')
-    #     seq = seq.strip()
-    #     sequences_with_ppl.append(seq)
-    #     seq = '\n'.join(seq[i:i+60] for i in range(0, len(seq), 60))
-    #     seq = '<|endoftext|>' + seq + '<|endoftext|>'
-    #     ppl = calculatePerplexity(seq, model, tokenizer)
-    #     ppls.append(ppl)
 
 #storing all generated proteins with their perplexity values in csv
 df_ppl = pd.DataFrame()
@@ -236,15 +209,14 @@ plddt_results = []
 
 for sequence in tqdm(top_prots):
     # Input the sequence to ESM model
-    # input_sequence = sequence.replace('\n', '')
-    # if len(input_sequence) == 0:
-    #     continue
-    # inputs = esm_tokenizer([input_sequence], return_tensors="pt", add_special_tokens=False)
-    # inputs = inputs.to(device)
-    # outputs = esm_model(**inputs)
-    # avg_plddt = torch.mean(outputs.plddt)
-    plddt_results.append(0.75)
-    #plddt_results.append(avg_plddt.item())
+    input_sequence = sequence.replace('\n', '')
+    if len(input_sequence) == 0:
+        continue
+    inputs = esm_tokenizer([input_sequence], return_tensors="pt", add_special_tokens=False)
+    inputs = inputs.to(device)
+    outputs = esm_model(**inputs)
+    avg_plddt = torch.mean(outputs.plddt)
+    plddt_results.append(avg_plddt.item())
     torch.cuda.empty_cache()
 
 
